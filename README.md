@@ -8,7 +8,7 @@
 
 目标是：
 * 掌握Shell编程；
-* 熟悉nginx；
+* 熟悉Nginx；
 * 熟悉Apache；
 
 #### 2. Python编程；
@@ -19,10 +19,10 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 目标是：
 * 掌握Python基础模块；
 * 掌握Socket、HTTP等相关模块；
-* 掌握Json
-* 掌握SMTP
-* 熟悉CUI
-* 熟悉GUI
+* 掌握Json；
+* 掌握SMTP；
+* 熟悉CUI；
+* 熟悉GUI；
 
 #### 3. 自动化测试；
 有过RobotFramework框架下，Selenium自动化测试经历，测试对象为WEB服务端。由于项目中测试的自动化覆盖率不高，未深入使用，对环境搭建、基础库、元素定位比较熟悉（曾自学过HTML和CSS）。
@@ -30,8 +30,8 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 目标是：
 * 深入Selenium；
 * 掌握Appium；
-* 熟悉QTP
-* 熟悉Loadrunner
+* 熟悉QTP；
+* 熟悉Loadrunner；
 
 ## Python练习记录：
 
