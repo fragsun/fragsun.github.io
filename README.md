@@ -37,3 +37,6 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 
 ##### 1. path:[/python practice/checkNet.py](https://github.com/fragsun/fragsun.github.io/blob/master/python%20practice/checkNet.py)
 学以致用，写个脚本用于检查局域网是否有新设备接入，在发现新设备接入的情况下，将新设备信息以邮件方式发送至邮箱进行提醒。脚本放在家用NAS的Linux虚拟机中，使用crontab定时运行。
+
+##### 2. path:[/python practice/Conference_创建会议并批量添加成员号码.py](https://github.com/fragsun/fragsun.github.io/blob/master/python%20practice/Conference_%E5%88%9B%E5%BB%BA%E4%BC%9A%E8%AE%AE%E5%B9%B6%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%88%90%E5%91%98%E5%8F%B7%E7%A0%81.py)
+在测试工作中，有一项测试任务需要在WEB页面输入大量的数据，因此写了Python脚本，在获取到必要信息的情况下，使用urllib模块构造POST报文，完成测试任务。
