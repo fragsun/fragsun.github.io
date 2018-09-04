@@ -17,24 +17,31 @@
 3、据资料，操作数据库的方法存在注入漏洞；
 4、sendmail的操作方式较为粗暴;
 
+2018.07.31
+更新日志：
+1、之前计划使用cron来定时执行脚本，后来发现cron的运行环境和普通的执行环境不同，python脚本会执行失败。更新后使用while循环执行主程序，将执行该脚本的命令保存为sh脚本，然后将sh脚本设置为systemctl服务，可以实现开机启动，并可以通过start、stop、restart等命令进行控制。
+2、之前登陆路由器管理界面时，直接使用了的是浏览器的cookie，一段时间后，cookie过期，导致无法登陆路由器。更新之后采用了cookiejar进行cookie协商，不会出现cookie过期的问题。
+
 '''
 
-import os
+import os,time
+import logging
 import re
 import urllib.request
+import http.cookiejar
 import pymysql
-import logging
 from bs4 import BeautifulSoup
 
 url = "http://x.x.x.x/xxxx.htm"      #路由器管理页面
 user = 'username_route'      #路由器账号
 pwd = 'password_route'        #路由器密码
+mailReceiver = "xxxx@xxx.com"       #通知收件人的mail地址
 
 #定义logging方法，用于记录相关日志
 def def_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
-    logfile = 'log.txt'     #日志文件路径
+    logfile = 'checkNet.log'        #日志文件路径
     logConfig = logging.FileHandler(logfile, mode='a')
     logConfig.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - [line:%(lineno)d] - %(levelname)s: %(message)s')
@@ -49,12 +56,11 @@ def get_device_list(url,user,pwd):
     logger.debug("Try to connect the route.")
     authMsg = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     authMsg.add_password(None,url,user,pwd)
-    login = urllib.request.HTTPBasicAuthHandler(authMsg)
-    urlOpener = urllib.request.build_opener(login)
-    urlOpener.addheaders = [
-    ('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'),
-    ('Cookie','XSRF_TOKEN=3284348705')
-    ]
+    loginHandler = urllib.request.HTTPBasicAuthHandler(authMsg)
+    cookie_file="Cookie.txt"
+    cookie = http.cookiejar.MozillaCookieJar(cookie_file)
+    cookieHandler = urllib.request.HTTPCookieProcessor(cookie)
+    urlOpener = urllib.request.build_opener(loginHandler,cookieHandler)
     getHtm = urlOpener.open(url).read()
     logger.debug("Conent to the route success.")
 
@@ -108,7 +114,7 @@ def compare_with_db(deviceFromRoute):
                 logger.info('''Update the device name. Execute sql command: %s''' %updateName)
                 # print (updateName)
         else:    #未查询到该设备时
-            logUnkownDevice = '''Device '%s' is not exist in database! device will record into datebase.''' %(deviceFromRoute[i][0])
+            logUnkownDevice = '''Device '%s' is not exist in database! device will record into database.''' %(deviceFromRoute[i][0])
             logger.critical(logUnkownDevice)
             logSummary.append(logUnkownDevice)
             # print (logUnkownDevice)
@@ -125,27 +131,33 @@ def compare_with_db(deviceFromRoute):
 #定义发送邮件的方法
 def mail_log(mailAddress,mailContent):
     logger.debug("Start to send mail.")
-    sender = 'admin@mail.com'      #发件人地址
-    receiver= mailAddress
+    sender = 'admin@ds216.com'
     subject = "Log summary of checknet process"
     formatterContent=('''
-    The network in home has some changes.Follow log messages as a reference.
-    ------process log------
-    %s
-    '''%mailContent)
+This mail is from Debian on DS216.
+The network in home has some changes.Follow log messages as a reference.
+------process log------
+%s'''%mailContent)
 
-    mall = ('''From: %s
-    receiver: %s
-    subject: %s
-    %s
-    '''%(sender,receiver,subject,formatterContent))
+    mail = ('''From: %s
+To: %s
+Subject: %s
+%s'''%(sender,mailAddress,subject,formatterContent))
 
-    os.system('''sendmail -t << EOF\n%s\nEOF\n'''%mall)
+    os.system('''sendmail -t << EOF\n%s\nEOF\n'''%mail)
     logger.debug("Mail of log summary is send to %s."%mailAddress)
+    return mail
 
-logger.debug("Process is start.")
-all_device_info = get_device_list(url,user,pwd)
-mailContent = '\n'.join(compare_with_db(all_device_info))
-mail_log('user@mail.com',mailContent)       #使用mail_log方法发送邮件，传入收件人参数
-logger.debug("Process is end.")
-print (mailContent)
+
+while True:
+    logger.debug("Process is start.")
+    all_device_info = get_device_list(url,user,pwd)
+    mailContent = '\n'.join(compare_with_db(all_device_info))
+    #print (mailContent)
+    if len(mailContent) > 0:
+        #print ('''A mail will be send to %s'''%mailReceiver)
+        logger.info('''A mail will be send to %s'''%mailReceiver)
+        mailContent = mail_log(mailReceiver,mailContent)        #使用mail_log方法发送邮件，传入收件人参数
+        logger.info(mailContent)
+    logger.debug("Process is end.")
+    time.sleep(120)
