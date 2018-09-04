@@ -43,6 +43,9 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 
 ##### 3. path:[/python practice/测试练手_发送即时消息 1to1.py]
 (fragsun.github.io/python practice/测试练手_发送即时消息 1to1.py)
+
+      fragsun.github.io/python practice/测试练手_发送即时消息 1to1.py
+    
 在测试工作中，有一项测试任务需要确定IM客户端接收大量消息时的性能指标。服务端使用verto模块，客户端为Qt框架开发的PC客户端，使用websocket进行通信，内容使用json进行格式化。该脚本访问服务端的业务端口，建立websocket连接，通过向服务端发送指定格式的json信息，实现登陆、向指定用户发送大量消息等功能。
 
 脚本中使用到websocket和json模块用于和服务端进行交互，使用了生成器用于生成交互信息中的id，使用threading模块创建子线程和服务端进行保活。
