@@ -237,7 +237,7 @@ uid = get_loginInfo()       #获取用户信息并登录
 while True:
     task = get_taskInfo()       #获取任务信息
     print('\nSending messages.')
-    msgId = idGen()     #调用生成器方法，用户生成消息序列
+    msgId = idGen()     #调用生成器方法，用于生成消息序列
     for sendN in range (task[2]):       #根据消息数量循环执行发送消息的任务
         send_textMessage(uid,task[0],task[1])       #调用发送文本消息的方法
         time.sleep(decimal.Decimal(1)/decimal.Decimal(task[3]))     #根据任务的频率值调整sleep时间
