@@ -4,7 +4,7 @@
 这个repositories主要用于记录我的学习历程，主要学习方向：
 
 #### 1. Linux操作应用；
-目前已适应Linux操作系统的工作环境，常用操作系统有ContOS和Debian，对用户/用户组，权限，iptables，crontab，vim较为熟悉。可熟练使用
+目前已适应Linux操作系统的工作环境，常用操作系统有ContOS和Debian，对用户/用户组，权限，iptables，crontab，vim较为熟悉,可熟练使用。
 
 目标是：
 * 掌握MySQL应用；
@@ -19,8 +19,7 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 
 目标是：
 * 掌握Python基础模块；
-* 掌握Socket、HTTP等相关模块；
-* 掌握SQL编程；
+* 掌握websocket,requests等相关模块；
 * 掌握Json使用；
 * 掌握SMTP使用；
 * 熟悉GUI；
