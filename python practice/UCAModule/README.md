@@ -1,4 +1,4 @@
-# UCAModule简介
+## UCAModule简介
 UCAModule是一个使用python编写的模块包，通过和IPPBX建立websocket连接，模拟发送UCA的消息报文，实现一些简单的UCA功能。
 
 ## UCAModule设计思路：
@@ -26,3 +26,21 @@ ucaJson.py：用于封装UCA客户端的json消息格式（目前json消息直�
 
 ## UCAModule实现的功能：
 目前UCAModule能够实现UCA登录、登出、保活、发送消息、监听消息、记录消息等功能，目前来看功能还是较为简单。
+
+## UCAModule实现的功能：
+#### 实例1：向某用户连续发送300条消息，每秒发送10条；
+<pre><code>
+# -*- coding:UTF-8 -*-
+
+#从 UCAModule 模块包中 import 两个模块
+from UCAModule import ucaClient,ucaCaseMethod
+
+#创建一个 ucaClient 对象，对象名为 a
+a = ucaClient.ucaClient('130.255.3.137','7001')
+#a 执行登录动作
+a.login()
+#a 向某用户发送指定消息，并设置频率
+a.send_textMessage('7000', 'Hello World! ', 300, 10)
+#a 执行登出动作
+a.logout()
+</pre></code>
