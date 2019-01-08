@@ -13,9 +13,8 @@
 * 熟悉Apache；
 
 #### 2. Python编程；
-业余时间学习Python，熟悉常用数据类型，if、for、while等逻辑控制语句，函数和类的定义和使用。常常写一点小脚本，努力将学习到的知识用于工作或日常需求，可进行文件操作、数据库操作，使用过logging、connect、paramiko、telnetlib、MySQLdb、pymysql、command、urllib、socket、bs4、uuid、socket等模块。
+业余时间学习Python，常常写一点小脚本，努力将学习到的知识用于工作或日常需求，可进行文件操作、数据库操作，使用过logging、connect、paramiko、telnetlib、MySQLdb、pymysql、command、urllib、socket、bs4、uuid、websocket等模块。
 
-Python学习需要大量代码锻炼和积累，工作中几乎用不到，而工作之外又没有太多时间，对学习是很大的制约。
 
 目标是：
 * 掌握Python基础模块；
