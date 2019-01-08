@@ -47,3 +47,7 @@ Python学习需要大量代码锻炼和积累，工作中几乎用不到，而�
 在测试工作中，有一项测试任务需要确定IM客户端接收大量消息时的性能指标。服务端使用verto模块，客户端为Qt框架开发的PC客户端，使用websocket进行通信，内容使用json进行格式化。该脚本访问服务端的业务端口，建立websocket连接，通过向服务端发送指定格式的json信息，实现登陆、向指定用户发送大量消息等功能。
 
 脚本中使用到websocket和json模块用于和服务端进行交互，使用了生成器用于生成交互信息中的id，使用threading模块创建子线程和服务端进行保活。
+
+##### 4. path:[/python practice/UCAModule](https://github.com/fragsun/fragsun.github.io/tree/master/python%20practice/UCAModule)
+在上一个练习中，为了测试IM客户端的一些性能指标，使用py脚本模拟客户端和服务器建立连接。后来为了实现更多功能设计了UCAModule模块，使用一个ucaClient.ucaClient()方法来创建一个模拟的UCA对象，然后通过封装的其它方法，对该UCA对象进行各种操作。
+目前ucaClient.ucaClient()对象有登录、登出、保活、发送消息、监听端口等方法，可以模拟一个基本的客户端，更多的方法可以根据需要进行扩展添加。通过该模块可以对服务器进行接口测试、性能测试，也可以作为辅助工具进行客户端测试，也可以作为其他框架RobotFramework、Appium的辅助工具。
