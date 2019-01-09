@@ -16,7 +16,7 @@
 业余时间学习Python，常常写一点小脚本，努力将学习到的知识用于工作或日常需求，可进行文件操作、数据库操作，使用过logging、connect、paramiko、telnetlib、MySQLdb、pymysql、command、urllib、socket、bs4、uuid、websocket等模块。
 
 
-目标是：
+自动化测试学习目标是：
 * 掌握Python基础模块；
 * 掌握websocket,requests等相关模块；
 * 掌握Json使用；
