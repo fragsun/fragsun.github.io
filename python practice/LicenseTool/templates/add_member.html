@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="../static/login.css">
+{% endblock %}
+
+{% block content %} 
+    <form method='POST' action='/add_member'>
+	{{ form.csrf_token }}
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+		<h3 class="panel-title">添加授权工号</h3>
+	    </div>
+	    <div class="panel-body">
+		<div class="input-group">
+		    {{ form.work_id.label(class='input-group-addon') }}
+		    {{ form.work_id(class='form-control') }}
+		</div>
+		<div class="error-display">
+		    {% for error in form.work_id.errors %}
+			<span> {{ error }} </span>
+		    {% endfor %}
+		</div>
+		<div class="input-group">
+		    {{ form.email.label(class='input-group-addon') }}
+		    {{ form.email(class='form-control') }}
+		</div>
+		<div class="error-display">
+		    {% for error in form.email.errors %}
+			<span> {{ error }} </span>
+		    {% endfor %}
+		</div>
+	    </div>
+	    <div class="btn-group" role="group">
+		<input type="submit" class="btn btn-info" value="添加">
+	    </div>
+	</div>
+    </form>
+    {% if result=='success' %}
+	<div class="alert alert-info" role="alert">
+	    Add <span class="alert-span">{{ work_id }} : {{ email }}</span> success!
+	</div>
+    {% elif result=='added' %}
+	<div class="alert alert-info" role="alert">
+	    User <span class="alert-span">{{ work_id }} : {{ email }}</span> already added! nothing has changed.
+	</div>
+    {% endif %}
+{% endblock %}

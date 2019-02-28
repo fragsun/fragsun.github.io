@@ -1,0 +1,50 @@
+.navbar-btn
+{
+    margin: 0px;
+}
+
+#main_div
+{
+    width: 500px;
+    margin: 0px auto;
+}
+
+.panel-body
+{
+    padding: 0 15px 20px 15px;
+}
+
+.input-group
+{
+    margin:20px 0 0 0;
+    width: 100%;
+}
+
+.input-group-addon
+{
+    width: 140px;
+    text-align: left;
+}
+
+.button_div
+{
+    text-align: center;
+    margin: 0px auto 20px auto;
+}
+
+.btn-group > .btn:first-child
+{
+    margin: 0 50px 0 0;
+}
+
+.btn-group > .btn
+{
+    margin: 0 50px 0 50px;
+}
+
+.error-display
+{
+    text-align: left;
+    padding-left: 10px;
+    color: red;
+}

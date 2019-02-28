@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="../static/login.css">
+    <style type="text/css">
+	div.alert
+	    {
+		width: 600px;
+	    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if msg=='regist_success' %}
+	<div class="alert alert-info" role="alert">
+	    Register success! Click <a href="{{ url_for('login') }}" class="alert-link">here</a> to login.
+	</div>
+    {% elif msg=='link_send' %}
+	<div class="alert alert-info" role="alert">
+	    The register link has send to your email, the link will expire after 15 minutes !
+	</div>
+    {% elif msg=='already_regist' %}
+	<div class="alert alert-info" role="alert">
+	    Someone has register use this information!
+	</div>
+    {% elif msg=='logout_required' %}
+	<div class="alert alert-info" role="alert">
+	    Please logout first then visit this link to complete the follow step!
+	</div>
+    {% elif msg=='link_timeout' %}
+	<div class="alert alert-danger" role="alert">
+	    This link is expire! Click <a href="{{ url_for('regist') }}" class="alert-link">here</a> to get a new register link.
+	</div>
+    {% elif msg=='link_invalid' %}
+	<div class="alert alert-danger" role="alert">
+	    This link is invalid! Click <a href="{{ url_for('regist') }}" class="alert-link">here</a> to get a new register link.
+	</div>
+    {% elif msg=='not_permit' %}
+	<div class="alert alert-danger" role="alert">
+	    This work id is not permit to register!
+	</div>
+    {% endif %}
+{% endblock %}

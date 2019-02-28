@@ -1,0 +1,116 @@
+﻿{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="../static/license_generator.css">
+{% endblock %}
+
+{% block content %}
+    <div id="main_div">
+        <form method="POST" action="">
+            {{ forms.csrf_token }}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+		    <h3 class="panel-title">机器信息</h3>
+		</div>
+                <div class="panel-body">
+                    <div class="input-group">
+                      {{ forms.device_code.label(class="input-group-addon") }}
+                      {{ forms.device_code(class="form-control", placeholder="输入机器码") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.device_code.errors %}
+                            <span> {{ error }} </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+		    <h3 class="panel-title">授权信息</h3>
+		</div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        {{ forms.user_regist.label(class="input-group-addon") }}
+                        {{ forms.user_regist(class="form-control", placeholder="注册用户授权数") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.user_regist.errors %}
+                            <!-- <span> {{ error }} </span> -->
+                            <span> 必须为大于0的整数。 </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-group">
+                        {{ forms.user_type.label(class="input-group-addon") }}
+                        {{ forms.user_type(class="form-control", placeholder="授权用户类型") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.user_type.errors %}
+                            <span> {{ error }} </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-group">
+                        {{ forms.record_count.label(class="input-group-addon") }}
+                        {{ forms.record_count(class="form-control", placeholder="录音业务授权数") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.record_count.errors %}
+                            <!-- <span> {{ error }} </span> -->
+                            <span> 必须为大于0的整数。 </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-group">
+                        {{ forms.confer_count.label(class="input-group-addon") }}
+                        {{ forms.confer_count(class="form-control", placeholder="会议业务授权数") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.confer_count.errors %}
+                            <!-- <span> {{ error }} </span> -->
+                            <span> 必须为大于0的整数。 </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-group">
+                        {{ forms.expire.label(class="input-group-addon") }}
+                        {{ forms.expire(class="form-control", placeholder="授权时长") }}
+                    </div>
+                    <div class="error-display">
+                        {% for error in forms.expire.errors %}
+                            <!-- <span> {{ error }} </span> -->
+                            <span> 必须为大于0的整数。 </span>
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+		    <h3 class="panel-title">特殊模块</h3>
+		</div>
+                <div class="panel-body">
+                    <div class="input-group">
+                      <span class="input-group-addon" style="text-align: center;">
+                          {{ forms.soap_mod() }}
+                      </span>
+                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="soap模块" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button_div" role="group">
+		<div class="btn-group" role="group">
+		    {{ forms.submit(type='submit', class="btn btn-info") }}
+		    <a href="/licenseGen"><button type="button" class="btn btn-info">重置所有信息</button></a>
+                </div>
+            </div>
+            <div class="alert alert-info" role="alert" style="display: {{ display_value }};" >
+		License create success! Click <a href="{{ url_for('download', licenseFile=licenseLink) }}" class="alert-link">here</a> to download License file.
+	    </div>
+        </form>
+    </div>
+
+{% endblock %}
