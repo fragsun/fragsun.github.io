@@ -4,7 +4,7 @@
 import sys, os, logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from flask import Flask, render_template, redirect, request, url_for, send_from_directory, g
+from flask import Flask, render_template, redirect, request, url_for, send_from_directory
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from appscript import formsModel
 from appscript.sendMail import registLink, sendMail
@@ -149,7 +149,6 @@ def download(licenseFile):
 @app.route('/licenseGen', methods=['POST','GET'])
 @login_required
 def licenseGen():
-    g.isAdmin = current_user.isAdmin()
     forms = formsModel.createLicense_form()
     if forms.validate_on_submit():
         formData = dict()
