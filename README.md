@@ -58,3 +58,8 @@ RobotFramework框架使用感言：对于不会代码的测试人员来说，是
 在上一个练习中，为了测试IM客户端的一些性能指标，使用py脚本模拟客户端和服务器建立连接。后来为了实现更多功能设计了UCAModule模块，使用一个ucaClient.ucaClient()方法来创建一个模拟的UCA对象，然后通过封装的其它方法，对该UCA对象进行各种操作。
 
 目前ucaClient.ucaClient()对象有登录、登出、保活、发送消息、监听端口等方法，可以模拟一个基本的客户端，更多的方法可以根据需要进行扩展添加。通过该模块可以对服务器进行接口测试、性能测试，也可以作为辅助工具进行客户端测试，也可以作为其他框架RobotFramework、Appium的辅助工具。
+
+##### 5. path:[/python practice/LicenseTool](https://github.com/fragsun/fragsun.github.io/tree/master/python%20practice/LicenseTool)
+近期学习了Flask，于是用Flask框架写了一个web版本的license生成工具，方便在测试活动中生成license文件。考虑到lincense的敏感性，需要来访者注册、登录后才能访问lincense工具。主要流程是：管理员添加授权工号和邮箱 --> 来访者通过填写工号和邮箱获取注册链接 --> 通过访问注册链接完成用户注册 --> 登录后使用license工具 --> 日志记录每次生成的lincense信息用于追溯。
+
+这个web使用了flask_wtf提供表单创建和验证，flask_login提供用户管理，flask_sqlalchemy提供数据库ORM模型，smtplib提供邮件发送功能。
