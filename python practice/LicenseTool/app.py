@@ -4,7 +4,7 @@
 import sys, os, logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from flask import Flask, render_template, redirect, request, url_for, send_from_directory
+from flask import Flask, render_template, redirect, request, url_for, send_from_directory, g
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from appscript import formsModel
 from appscript.sendMail import registLink, sendMail
@@ -126,16 +126,20 @@ def logout():
 @app.route('/add_member', methods=['POST', 'GET'])
 @login_required
 def add_member():
-    forms = formsModel.regist_link()
-    if forms.validate_on_submit():
-        if dbModel.RegistLink.query.filter_by(email=forms.email.data.lower())[:] or dbModel.RegistLink.query.filter_by(work_id=forms.work_id.data)[:]:
-            return render_template('add_member.html', form=forms, result='added', work_id=forms.work_id.data, email=forms.email.data.lower())
-        else:
-            add_id = dbModel.RegistLink(work_id=forms.work_id.data, email=forms.email.data.lower())
-            db.session.add(add_id)
-            db.session.commit()
-            return render_template('add_member.html', form=forms, result='success', work_id=forms.work_id.data, email=forms.email.data.lower())
-    return render_template('add_member.html', form=forms)
+    if current_user.isAdmin():
+        forms = formsModel.regist_link()
+        if forms.validate_on_submit():
+            if dbModel.RegistLink.query.filter_by(email=forms.email.data.lower())[:] or dbModel.RegistLink.query.filter_by(work_id=forms.work_id.data)[:]:
+                return render_template('add_member.html', form=forms, result='added', work_id=forms.work_id.data, email=forms.email.data.lower())
+            else:
+                add_id = dbModel.RegistLink(work_id=forms.work_id.data, email=forms.email.data.lower())
+                db.session.add(add_id)
+                db.session.commit()
+                return render_template('add_member.html', form=forms, result='success', work_id=forms.work_id.data, email=forms.email.data.lower())
+        return render_template('add_member.html', form=forms)
+    else:
+        return render_template('message.html', msg='admin_required')
+
 
 
 @app.route('/license/<licenseFile>')
@@ -149,6 +153,7 @@ def download(licenseFile):
 @app.route('/licenseGen', methods=['POST','GET'])
 @login_required
 def licenseGen():
+    g.isAdmin = current_user.isAdmin()
     forms = formsModel.createLicense_form()
     if forms.validate_on_submit():
         formData = dict()
