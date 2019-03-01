@@ -39,5 +39,9 @@
 	<div class="alert alert-danger" role="alert">
 	    This work id is not permit to register!
 	</div>
+    {% elif msg=='admin_required' %}
+        <div class="alert alert-info" role="alert">
+            Please login as admin then visit this link!
+        </div>
     {% endif %}
 {% endblock %}
