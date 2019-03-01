@@ -51,7 +51,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def isAdmin(self):
-        if self.email == 'qiwei@mail.maipu.com':
+        if self.email == 'fragsun@mail.com':
             return True
         else:
             return False
