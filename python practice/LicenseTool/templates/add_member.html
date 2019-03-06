@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block style %}
-    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="../static/manage.css">
 {% endblock %}
 
 {% block content %} 
@@ -12,27 +12,29 @@
 		<h3 class="panel-title">添加授权工号</h3>
 	    </div>
 	    <div class="panel-body">
-		<div class="input-group">
-		    {{ form.work_id.label(class='input-group-addon') }}
-		    {{ form.work_id(class='form-control') }}
+		<div class="input-div">
+		    <div class="input-group">
+			{{ form.work_id.label(class='input-group-addon') }}
+			{{ form.work_id(class='form-control') }}
+		       	<div class="error-display">
+	    		    {% for error in form.work_id.errors %}
+				<span> {{ error }} </span>
+			    {% endfor %}
+			</div>
+		    </div>
+		    <div class="input-group">
+			{{ form.email.label(class='input-group-addon') }}
+			{{ form.email(class='form-control') }}
+			<div class="error-display">
+			    {% for error in form.email.errors %}
+				<span> {{ error }} </span>
+			    {% endfor %}
+			</div>
+		    </div>
 		</div>
-		<div class="error-display">
-		    {% for error in form.work_id.errors %}
-			<span> {{ error }} </span>
-		    {% endfor %}
+		<div class="btn-group" role="group">
+		    <input type="submit" class="btn btn-info" value="添加">
 		</div>
-		<div class="input-group">
-		    {{ form.email.label(class='input-group-addon') }}
-		    {{ form.email(class='form-control') }}
-		</div>
-		<div class="error-display">
-		    {% for error in form.email.errors %}
-			<span> {{ error }} </span>
-		    {% endfor %}
-		</div>
-	    </div>
-	    <div class="btn-group" role="group">
-		<input type="submit" class="btn btn-info" value="添加">
 	    </div>
 	</div>
     </form>
@@ -45,4 +47,39 @@
 	    User <span class="alert-span">{{ work_id }} : {{ email }}</span> already added! nothing has changed.
 	</div>
     {% endif %}
+    <div class="panel panel-default">
+	<div class="panel-heading">
+	    <h3 class="panel-title">授权工号列表</h3>
+	</div>
+	<table class="table table-striped table-bordered table-hover">
+	    <tr class="">
+		<th>工号</th>
+		<th>邮箱</th>
+		<th>注册时间</th>
+		<th>操作</th>
+	    </tr>
+	    {% for item in userLists %}
+		<tr class="">
+		    <td>{{ item.work_id }}</td>
+    		    <td>{{ item.email }}</td>
+    		    {% if item.regist_if %}
+    			<td>{{ item.userInfo[0].regist_time }}</td>
+			<td>
+			    <a href="{{ url_for('delete_user', user=item.work_id) }}">
+				<button type="button" class="btn btn-danger edit-button"> 删除帐号 </button>
+			    </a>
+			</td>
+    		    {% else %}
+    			<td> 未注册 </td>
+			<td>
+			    <a href="{{ url_for('delete_user', user=item.work_id) }}">
+				<button type="button" class="btn btn-warning edit-button"> 删除授权 </button>
+			    </a>
+			</td>
+    		    {% endif %}
+		</tr>
+	    {% endfor %}
+	</table>
+    </div>
+
 {% endblock %}
