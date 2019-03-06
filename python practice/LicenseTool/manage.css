@@ -1,0 +1,98 @@
+form
+{
+    margin-top:20px;
+}
+
+
+.panel
+{
+    min-width: 800px;
+    width: 60%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.panel-body
+{
+    padding: 0px 0px;
+}
+
+.input-div
+{
+    display: inline-block;
+    float: left;
+    width: 85%;
+    padding: 20px 10px 20px 20px;
+}
+
+.input-group
+{
+    width: 50%;
+    float: left;
+}
+
+.input-div > div:first-child
+{
+    padding-right: 10px;
+}
+
+.input-div > div:last-child
+{
+    padding-left: 10px;
+}
+
+.input-group-addon
+{
+    text-align: left;
+}
+
+.btn-group
+{
+    width: 15%;
+    float: right;
+    padding: 20px 20px 20px 10px;
+}
+
+.btn
+{
+    width: 100%;
+    margin: auto:
+}
+
+.error-display
+{
+    text-align: left;
+    padding-left: 10px;
+    color: red;
+}
+
+
+.alert
+{
+    margin:20px auto auto auto;
+    min-width: 800px;
+    width: 60%;
+    text-align: center;
+}
+
+.alert-span
+{
+    font-weight: bold;
+}
+
+td
+{
+    text-align: left;
+    vertical-align: middle !important;
+}
+
+tr > td:last-child
+{
+    text-align: center;
+    padding: 0px;
+}
+
+.edit-button
+{
+    border: none;
+}

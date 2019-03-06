@@ -6,6 +6,7 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, g
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from flask_migrate import Migrate
 from appscript import formsModel
 from appscript.sendMail import registLink, sendMail
 from appscript import createLicense as CL
@@ -16,6 +17,7 @@ from database import dbModel
 app = Flask(__name__)
 app.config.from_object("config.Config")
 db.init_app(app)
+migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -130,24 +132,45 @@ def add_member():
         forms = formsModel.regist_link()
         if forms.validate_on_submit():
             if dbModel.RegistLink.query.filter_by(email=forms.email.data.lower())[:] or dbModel.RegistLink.query.filter_by(work_id=forms.work_id.data)[:]:
-                return render_template('add_member.html', form=forms, result='added', work_id=forms.work_id.data, email=forms.email.data.lower())
+                userLists = dbModel.RegistLink.query.all()
+                return render_template('add_member.html', userLists=userLists, form=forms, result='added', work_id=forms.work_id.data, email=forms.email.data.lower())
             else:
                 add_id = dbModel.RegistLink(work_id=forms.work_id.data, email=forms.email.data.lower())
                 db.session.add(add_id)
                 db.session.commit()
-                return render_template('add_member.html', form=forms, result='success', work_id=forms.work_id.data, email=forms.email.data.lower())
-        return render_template('add_member.html', form=forms)
+                userLists = dbModel.RegistLink.query.all()
+                return render_template('add_member.html', userLists=userLists, form=forms, result='success', work_id=forms.work_id.data, email=forms.email.data.lower())
+        userLists = dbModel.RegistLink.query.all()
+        return render_template('add_member.html', userLists=userLists, form=forms)
+    return render_template('message.html', msg='admin_required')
+
+
+@app.route('/delete_user/<user>')
+@login_required
+def delete_user(user):
+    if current_user.isAdmin():
+        deleUser = dbModel.RegistLink.query.filter_by(work_id=user).first()
+        if deleUser.regist_if:
+            deleAccount = dbModel.User.query.filter_by(email=deleUser.email).first()
+            db.session.delete(deleAccount)
+        db.session.delete(deleUser)
+        db.session.commit()
+        return redirect(url_for('add_member'))
     else:
         return render_template('message.html', msg='admin_required')
-
 
 
 @app.route('/license/<licenseFile>')
 @login_required
 def download(licenseFile):
-    path = '/'.join(['licensefiles', licenseFile.split('_')[0]])
+    folderPath = '/'.join(['licensefiles', licenseFile.split('_')[0]])
+    totalPath = '/'.join([folderPath, licenseFile])
+    licenseLog = dbModel.LicenseRecords.query.filter_by(license_path=totalPath).first()
+    licenseLog.download_time = datetime.utcnow()
+    db.session.add(licenseLog)
+    db.session.commit()
     app.logger.info('\nLicense file is download: %s\n'%licenseFile)
-    return send_from_directory(path, licenseFile, as_attachment=True)
+    return send_from_directory(folderPath, licenseFile, as_attachment=True)
 
 
 @app.route('/licenseGen', methods=['POST','GET'])
@@ -162,6 +185,9 @@ def licenseGen():
         del formData['submit']
         app.logger.info('\nGet a license create requests:\n From: %s\n Agent: %s\n Cookies: %s\n Forms: %s\n'%(request.remote_addr, request.user_agent, request.cookies, formData))
         licenseFile = CL.createLicense(formData)
+        licenseLog = dbModel.LicenseRecords(username=current_user.username, from_ip=request.remote_addr, device_code=forms.device_code.data, license_path=licenseFile[0])
+        db.session.add(licenseLog)
+        db.session.commit()
         app.logger.info('\nLicense file Path: %s\nLicense Detail:\n%s'%(licenseFile[0], licenseFile[1]))
         licenseFileName = licenseFile[0].split('/')[-1]
         return render_template('license_generator.html', title='授权工具', display_value='block', licenseLink=licenseFileName, forms=forms)
@@ -174,7 +200,10 @@ def licenseGen():
 if __name__ == '__main__':
 
     cwd = '/'.join(sys.argv[0].split('/')[:-1])
-    log_path = cwd+'/log'
+    if cwd != '':
+        log_path = '/'.join([cwd, 'log'])
+    else:
+        log_path = 'log'
     if not os.path.exists(log_path):
         os.makedirs(log_path)
     log_file = log_path+'/app.log'
