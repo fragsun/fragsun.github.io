@@ -125,7 +125,7 @@ def sendSMS(phones, message):
 
 if __name__ == "__main__":
     date = '2019-05-01'
-    from_station = 'BJP'
+    from_station = 'XAY'
     to_station = 'CDW'
     phones = ["186xxxxxxxx", "199xxxxxxxx"]
 
