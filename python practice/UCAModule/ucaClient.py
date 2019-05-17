@@ -37,13 +37,7 @@ class ucaClient:
         self.client.send(loginRequest)
         print('Start to connect ippbx ...')
         result = json.loads(self.client.recv())
-        nonce = str(result['error']['nonce'])
-        realm = str(result['error']['realm'])
-        URPMd5 = hashlib.md5()
-        URPMd5.update(':'.join([str(self.username),realm,str(self.passwd)]))
-        auth = URPMd5.hexdigest()
-        URPNMd5 = hashlib.md5()
-        URPNMd5.update(':'.join([auth,nonce]))
+        '''defined the auth string'''
         auth = URPNMd5.hexdigest()
         method_auth = {
             'id':str(next(self.idseq)),
